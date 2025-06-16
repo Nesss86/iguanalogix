@@ -1,6 +1,6 @@
 # 🦎 IguanaLogix
 
-**IguanaLogix** is a full-stack integration demo built with [Iguana X](https://www.interfaceware.com/products/iguana-x), React, and Ruby on Rails. It showcases real-time HL7 message processing, AI-assisted message summarization, live chat/polling between staff, and a lightweight task delegation and patient scheduling system.
+**IguanaLogix** is a full-stack integration demo built with [Iguana X](https://www.interfaceware.com/iguana), React, and Ruby on Rails. It showcases real-time HL7 message processing, AI-assisted message summarization, live chat/polling between staff, and a lightweight task delegation and patient scheduling system.
 
 ---
 
@@ -122,7 +122,7 @@ rails s
 
 ## 🤝 Credits
 
-Built by [Your Name] as part of a second-round interview demo for iNTERFACEWARE.
+Built by Vanessa Little as part of a second-round interview demo for iNTERFACEWARE.
 
 ---
 
