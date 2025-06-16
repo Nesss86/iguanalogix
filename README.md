@@ -71,7 +71,7 @@ iguanalogix/
 
 ## 📄 Planning & Design
 
-- **📝 Project Plan**: [`/docs/IguanaLogix_Project_Plan.docx`](./docs/IguanaLogix_Project_Plan.docx)
+- **📝 Project Plan**: [`/docs/IguanaLogix Project Plan.docx`](docs/IguanaLogix Project Plan.docx)
 - **🎨 Wireframes**: Designed in Figma (link optional)
 - **🧠 User Stories**:
   - Nurses can summarize messages
