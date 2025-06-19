@@ -8,39 +8,36 @@ function App() {
   const [tickets, setTickets] = useState([]);
   const [appointments, setAppointments] = useState([]);
 
-  // Fetch data
   const fetchMessages = () => {
     axios.get('http://localhost:3000/messages')
-      .then((response) => setMessages(response.data))
-      .catch((error) => console.error('Error fetching messages:', error));
+      .then((res) => setMessages(res.data))
+      .catch((err) => console.error('Error fetching messages:', err));
   };
 
   const fetchTickets = () => {
     axios.get('http://localhost:3000/tickets')
-      .then((response) => setTickets(response.data))
-      .catch((error) => console.error('Error fetching tickets:', error));
+      .then((res) => setTickets(res.data))
+      .catch((err) => console.error('Error fetching tickets:', err));
   };
 
   const fetchAppointments = () => {
     axios.get('http://localhost:3000/appointments')
-      .then((response) => setAppointments(response.data))
-      .catch((error) => console.error('Error fetching appointments:', error));
+      .then((res) => setAppointments(res.data))
+      .catch((err) => console.error('Error fetching appointments:', err));
   };
 
-  // On mount
   useEffect(() => {
     fetchMessages();
     fetchTickets();
     fetchAppointments();
   }, []);
 
-  // Handlers
   const handleNewMessage = (newMessage) => {
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages(prev => [...prev, newMessage]);
   };
 
-  const handleNewAppointment = (newAppt) => {
-    setAppointments((prev) => [...prev, newAppt]);
+  const handleNewAppointment = (newAppointment) => {
+    setAppointments(prev => [...prev, newAppointment]);
   };
 
   const getTicketForMessage = (messageId) => {
@@ -50,6 +47,7 @@ function App() {
   return (
     <div style={{ padding: '2rem' }}>
       <h1>IguanaLogix Messages</h1>
+
       <MessageForm onMessageAdded={handleNewMessage} />
 
       <ul>
@@ -70,15 +68,15 @@ function App() {
         })}
       </ul>
 
-      <hr />
+      <hr style={{ margin: '2rem 0' }} />
 
-      <h1>Appointments</h1>
       <AppointmentForm onAppointmentAdded={handleNewAppointment} />
 
+      <h2>All Appointments</h2>
       <ul>
         {appointments.map((appt) => (
           <li key={appt.id}>
-            <strong>{appt.patient_name}</strong> — {appt.department} @ {new Date(appt.appointment_time).toLocaleString()}
+            <strong>{appt.patient_name}</strong> — {appt.department} — {new Date(appt.appointment_time).toLocaleString()}
           </li>
         ))}
       </ul>
@@ -87,6 +85,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
