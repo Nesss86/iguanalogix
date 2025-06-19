@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :appointments, only: [:index]
+  resources :appointments
   resources :tickets
   resources :messages
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
