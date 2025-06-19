@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  message_id: MyString
+  assigned_to: MyString
+  status: MyString
+  notes: MyText
+
+two:
+  title: MyString
+  message_id: MyString
+  assigned_to: MyString
+  status: MyString
+  notes: MyText
