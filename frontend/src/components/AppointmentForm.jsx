@@ -27,7 +27,7 @@ function AppointmentForm({ onAppointmentAdded }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
+    <form className="appointment-form" onSubmit={handleSubmit}>
       <h2>New Appointment</h2>
       <input
         type="text"

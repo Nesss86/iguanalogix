@@ -1,0 +1,40 @@
+@use 'sass:color';
+@use './variables' as *;
+
+.appointment-form {
+  background-color: $white;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  max-width: 500px;
+
+  input, select, button {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+  }
+
+  input, select {
+    background-color: $gray-light;
+    color: $text-color;
+    box-shadow: inset 4px 4px 8px $shadow-dark, inset -4px -4px 8px $shadow-light;
+  }
+
+  button {
+    background-color: $teal;
+    color: $white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px $shadow-dark, -4px -4px 8px $shadow-light;
+
+    &:hover {
+      background-color: color.adjust($teal, $lightness: -10%);
+    }
+  }
+}
+

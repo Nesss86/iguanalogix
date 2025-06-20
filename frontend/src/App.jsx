@@ -3,6 +3,9 @@ import axios from 'axios';
 import MessageForm from './components/MessageForm';
 import AppointmentForm from './components/AppointmentForm';
 
+import './styles/main.scss';
+
+
 function App() {
   const [messages, setMessages] = useState([]);
   const [tickets, setTickets] = useState([]);

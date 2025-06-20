@@ -1,0 +1,50 @@
+// src/components/MessageForm.module.scss
+@use '../styles/variables' as *;
+@use 'sass:color';
+
+
+.form {
+  background-color: $white;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+  margin-bottom: $spacing-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.input,
+.textarea {
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  background: $white;
+  color: $text-color;
+  box-shadow: inset 4px 4px 8px $shadow-dark, inset -4px -4px 8px $shadow-light;
+  transition: 0.3s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  box-shadow: inset 2px 2px 5px $shadow-dark, inset -2px -2px 5px $shadow-light;
+}
+
+.button {
+  padding: $spacing-sm $spacing-lg;
+  background-color: $teal;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  font-weight: bold;
+  font-size: $font-size-base;
+  box-shadow: $card-shadow;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: color.adjust($teal, $lightness: -10%);
+}

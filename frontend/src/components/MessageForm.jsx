@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
+import styles from './MessageForm.module.scss';
 
-export default function MessageForm({ onMessageAdded }) {
+function MessageForm({ onMessageAdded }) {
   const [formData, setFormData] = useState({
-    message_id: '',
     patient_name: '',
-    content: '',
+    message_id: ''
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -18,47 +18,39 @@ export default function MessageForm({ onMessageAdded }) {
 
     axios.post('http://localhost:3000/messages', formData)
       .then((response) => {
-        onMessageAdded?.(response.data);
-        setFormData({ message_id: '', patient_name: '', content: '' });
+        onMessageAdded(response.data);
+        setFormData({ patient_name: '', message_id: '' });
       })
       .catch((error) => {
-        console.error('Error adding message:', error);
+        console.error('Error creating message:', error);
       });
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '1.5rem' }}>
-      <div>
-        <label>Message ID:</label>
-        <input
-          type="text"
-          name="message_id"
-          value={formData.message_id}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Patient Name:</label>
-        <input
-          type="text"
-          name="patient_name"
-          value={formData.patient_name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Message Content:</label>
-        <textarea
-          name="content"
-          value={formData.content}
-          onChange={handleChange}
-          rows={4}
-          required
-        />
-      </div>
-      <button type="submit">Submit Message</button>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h2>New Message</h2>
+      <input
+        type="text"
+        name="patient_name"
+        placeholder="Patient Name"
+        value={formData.patient_name}
+        onChange={handleChange}
+        className={styles.input}
+        required
+      />
+      <input
+        type="text"
+        name="message_id"
+        placeholder="Message ID"
+        value={formData.message_id}
+        onChange={handleChange}
+        className={styles.input}
+        required
+      />
+      <button type="submit" className={styles.button}>Send Message</button>
     </form>
   );
 }
+
+export default MessageForm;
+

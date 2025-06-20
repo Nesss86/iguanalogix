@@ -1,0 +1,13 @@
+@use 'variables' as *;
+
+body {
+  margin: 0;
+  font-family: $font-stack;
+  background-color: $background-color;
+  color: $text-dark;
+}
+
+.test-color {
+  color: $teal; // assuming you defined $teal in _variables.scss
+}
+
