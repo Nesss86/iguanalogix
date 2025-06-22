@@ -14,7 +14,8 @@ class AppointmentsController < ApplicationController
 
   # POST /appointments
   def create
-    @appointment = Appointment.new(appointment_params)
+    parsed_time = parse_local_time(params[:appointment][:appointment_time])
+    @appointment = Appointment.new(appointment_params.merge(appointment_time: parsed_time))
 
     if @appointment.save
       render json: @appointment, status: :created, location: @appointment
@@ -25,7 +26,8 @@ class AppointmentsController < ApplicationController
 
   # PATCH/PUT /appointments/1
   def update
-    if @appointment.update(appointment_params)
+    parsed_time = parse_local_time(params[:appointment][:appointment_time])
+    if @appointment.update(appointment_params.merge(appointment_time: parsed_time))
       render json: @appointment
     else
       render json: @appointment.errors, status: :unprocessable_entity
@@ -46,6 +48,12 @@ class AppointmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def appointment_params
-      params.require(:appointment).permit(:patient_name, :department, :appointment_time)
+      params.require(:appointment).permit(:patient_name, :department)
+    end
+
+    # Parse datetime string as local (Eastern) time
+    def parse_local_time(datetime_str)
+      Time.zone.parse(datetime_str)
     end
 end
+

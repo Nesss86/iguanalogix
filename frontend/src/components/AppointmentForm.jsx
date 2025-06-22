@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const departmentOptions = [
+  'Cardiology',
+  'Pediatrics',
+  'Radiology',
+  'Neurology',
+  'General Medicine'
+];
+
 function AppointmentForm({ onAppointmentAdded }) {
   const [formData, setFormData] = useState({
     patient_name: '',
@@ -37,14 +45,19 @@ function AppointmentForm({ onAppointmentAdded }) {
         onChange={handleChange}
         required
       />
-      <input
-        type="text"
+
+      <select
         name="department"
-        placeholder="Department"
         value={formData.department}
         onChange={handleChange}
         required
-      />
+      >
+        <option value="">Select Department</option>
+        {departmentOptions.map((dept) => (
+          <option key={dept} value={dept}>{dept}</option>
+        ))}
+      </select>
+
       <input
         type="datetime-local"
         name="appointment_time"
@@ -52,9 +65,12 @@ function AppointmentForm({ onAppointmentAdded }) {
         onChange={handleChange}
         required
       />
+
       <button type="submit">Create Appointment</button>
     </form>
   );
 }
 
 export default AppointmentForm;
+
+

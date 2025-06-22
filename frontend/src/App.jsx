@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import NavBar from './components/NavBar';
 import Welcome from './pages/Welcome';
-import AppointmentsPage from './pages/Appointments';
+import AppointmentsPage from './pages/AppointmentsPage';
 import AISummary from './pages/AISummary';
 import PollingMessage from './pages/PollingMessage';
 import NewTicketForm from './pages/NewTicketForm';
@@ -38,15 +38,30 @@ function App() {
 
   const handleNewAppointment = (newAppointment) => {
     setAppointments((prev) => [...prev, newAppointment]);
+    setToast('Appointment added.');
+    setTimeout(() => setToast(''), 3000);
+  };
+
+  const handleAppointmentUpdate = (updatedAppointment) => {
+    setAppointments((prev) =>
+      prev.map((appt) =>
+        appt.id === updatedAppointment.id ? updatedAppointment : appt
+      )
+    );
+    setToast('Appointment updated.');
+    setTimeout(() => setToast(''), 3000);
+  };
+
+  const handleAppointmentDelete = (deletedId) => {
+    setAppointments((prev) => prev.filter((appt) => appt.id !== deletedId));
+    setToast('Appointment canceled.');
+    setTimeout(() => setToast(''), 3000);
   };
 
   const handleNewTicket = (ticket) => {
     setTickets((prev) => [...prev, ticket]);
     setToast('Ticket successfully created.');
-
-    setTimeout(() => {
-      setToast('');
-    }, 3000);
+    setTimeout(() => setToast(''), 3000);
   };
 
   const handleTicketUpdate = (updatedTicket) => {
@@ -72,6 +87,8 @@ function App() {
               <AppointmentsPage
                 appointments={appointments}
                 onAppointmentAdded={handleNewAppointment}
+                onAppointmentUpdated={handleAppointmentUpdate}
+                onAppointmentDeleted={handleAppointmentDelete}
               />
             }
           />
@@ -119,6 +136,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
