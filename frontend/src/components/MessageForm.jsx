@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
-import styles from './MessageForm.module.scss';
+import '../styles/_message-form.scss';
 
-function MessageForm({ onMessageAdded }) {
+function MessageForm({ onMessageAdded, currentUser }) {
   const [formData, setFormData] = useState({
     patient_name: '',
-    message_id: ''
+    content: ''
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,42 +18,62 @@ function MessageForm({ onMessageAdded }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    axios.post('http://localhost:3000/messages', formData)
-      .then((response) => {
-        onMessageAdded(response.data);
-        setFormData({ patient_name: '', message_id: '' });
+    const newMessage = {
+      ...formData,
+      message_id: crypto.randomUUID(),
+      sender: currentUser || 'Anonymous',
+      timestamp: new Date().toISOString()
+    };
+
+    axios.post('http://localhost:3000/messages', newMessage)
+      .then((res) => {
+        onMessageAdded(res.data); // ✅ Pass back actual new message
+        setFormData({ patient_name: '', content: '' });
       })
-      .catch((error) => {
-        console.error('Error creating message:', error);
+      .catch(() => {
+        setError('Failed to send message. Please try again.');
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className="message-form" onSubmit={handleSubmit}>
       <h2>New Message</h2>
+
       <input
         type="text"
         name="patient_name"
-        placeholder="Patient Name"
+        placeholder="Patient Name (optional)"
         value={formData.patient_name}
         onChange={handleChange}
-        className={styles.input}
-        required
       />
-      <input
-        type="text"
-        name="message_id"
-        placeholder="Message ID"
-        value={formData.message_id}
+
+      <textarea
+        name="content"
+        placeholder="Write your message..."
+        value={formData.content}
         onChange={handleChange}
-        className={styles.input}
         required
       />
-      <button type="submit" className={styles.button}>Send Message</button>
+
+      <button type="submit" disabled={loading}>
+        {loading ? 'Sending...' : 'Send Message'}
+      </button>
+
+      {error && <p className="error">{error}</p>}
     </form>
   );
 }
 
 export default MessageForm;
+
+
+
+
+
 

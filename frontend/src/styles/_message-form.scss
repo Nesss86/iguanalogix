@@ -1,0 +1,59 @@
+@use './variables' as *;
+@use 'sass:color';
+
+
+.message-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: $border-radius;
+  background-color: $white;
+  box-shadow: $card-shadow;
+
+  h2 {
+    text-align: center;
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-md;
+    color: $text-color;
+  }
+
+  input {
+    width: 100%;
+    padding: $spacing-sm;
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-base;
+    border-radius: $border-radius;
+    border: none;
+    box-shadow: inset 2px 2px 6px $shadow-dark, inset -2px -2px 6px $shadow-light;
+    background-color: $gray-light;
+  }
+
+  button {
+    width: 100%;
+    padding: $spacing-sm;
+    font-size: $font-size-base;
+    border: none;
+    border-radius: $border-radius;
+    background: linear-gradient(135deg, $teal 0%, color.adjust($teal, $lightness: 20%));
+    color: $white;
+    box-shadow: 2px 2px 6px $shadow-dark, -2px -2px 6px $shadow-light;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .error {
+    margin-top: $spacing-sm;
+    color: red;
+    font-size: $font-size-sm;
+    text-align: center;
+  }
+}

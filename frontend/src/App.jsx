@@ -1,21 +1,28 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import MessageForm from './components/MessageForm';
-import AppointmentForm from './components/AppointmentForm';
+
+import NavBar from './components/NavBar';
+import Welcome from './pages/Welcome';
+import AppointmentsPage from './pages/Appointments';
+import AISummary from './pages/AISummary';
+import PollingMessage from './pages/PollingMessage';
+import NewTicketForm from './pages/NewTicketForm';
+import TicketDetail from './pages/TicketDetail';
+import TicketsList from './pages/TicketsList';
 
 import './styles/main.scss';
 
-
 function App() {
-  const [messages, setMessages] = useState([]);
   const [tickets, setTickets] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [toast, setToast] = useState('');
+  const [currentUser] = useState('Nurse Jamie');
 
-  const fetchMessages = () => {
-    axios.get('http://localhost:3000/messages')
-      .then((res) => setMessages(res.data))
-      .catch((err) => console.error('Error fetching messages:', err));
-  };
+  useEffect(() => {
+    fetchTickets();
+    fetchAppointments();
+  }, []);
 
   const fetchTickets = () => {
     axios.get('http://localhost:3000/tickets')
@@ -29,65 +36,96 @@ function App() {
       .catch((err) => console.error('Error fetching appointments:', err));
   };
 
-  useEffect(() => {
-    fetchMessages();
-    fetchTickets();
-    fetchAppointments();
-  }, []);
-
-  const handleNewMessage = (newMessage) => {
-    setMessages(prev => [...prev, newMessage]);
-  };
-
   const handleNewAppointment = (newAppointment) => {
-    setAppointments(prev => [...prev, newAppointment]);
+    setAppointments((prev) => [...prev, newAppointment]);
   };
 
-  const getTicketForMessage = (messageId) => {
-    return tickets.find(ticket => ticket.message_id === messageId);
+  const handleNewTicket = (ticket) => {
+    setTickets((prev) => [...prev, ticket]);
+    setToast('Ticket successfully created.');
+
+    setTimeout(() => {
+      setToast('');
+    }, 3000);
+  };
+
+  const handleTicketUpdate = (updatedTicket) => {
+    setTickets((prev) =>
+      prev.map((ticket) =>
+        ticket.id === updatedTicket.id ? updatedTicket : ticket
+      )
+    );
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>IguanaLogix Messages</h1>
+    <Router>
+      <NavBar />
+      <div className="app-content">
+        {toast && <div className="toast">{toast}</div>}
 
-      <MessageForm onMessageAdded={handleNewMessage} />
+        <Routes>
+          <Route path="/" element={<Welcome />} />
 
-      <ul>
-        {messages.map((msg) => {
-          const ticket = getTicketForMessage(msg.message_id);
-          return (
-            <li key={msg.id}>
-              <strong>{msg.patient_name}</strong> — {msg.message_id}
-              {ticket && (
-                <ul style={{ marginTop: '0.25rem', marginBottom: '1rem' }}>
-                  <li><em>Ticket:</em> {ticket.title}</li>
-                  <li><em>Assigned To:</em> {ticket.assigned_to}</li>
-                  <li><em>Status:</em> {ticket.status}</li>
-                </ul>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+          <Route
+            path="/appointments"
+            element={
+              <AppointmentsPage
+                appointments={appointments}
+                onAppointmentAdded={handleNewAppointment}
+              />
+            }
+          />
 
-      <hr style={{ margin: '2rem 0' }} />
+          <Route
+            path="/chat"
+            element={
+              <PollingMessage
+                tickets={tickets}
+                currentUser={currentUser}
+              />
+            }
+          />
 
-      <AppointmentForm onAppointmentAdded={handleNewAppointment} />
+          <Route path="/summary" element={<AISummary />} />
 
-      <h2>All Appointments</h2>
-      <ul>
-        {appointments.map((appt) => (
-          <li key={appt.id}>
-            <strong>{appt.patient_name}</strong> — {appt.department} — {new Date(appt.appointment_time).toLocaleString()}
-          </li>
-        ))}
-      </ul>
-    </div>
+          <Route
+            path="/tickets"
+            element={<TicketsList tickets={tickets} />}
+          />
+
+          <Route
+            path="/tickets/new"
+            element={
+              <NewTicketForm
+                currentUser={currentUser}
+                onTicketCreated={handleNewTicket}
+              />
+            }
+          />
+
+          <Route
+            path="/tickets/:id"
+            element={
+              <TicketDetail
+                tickets={tickets}
+                onTicketUpdate={handleTicketUpdate}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
 
 
 

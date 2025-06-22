@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_19_205548) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_22_045837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -29,15 +29,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_205548) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sender"
   end
 
   create_table "tickets", force: :cascade do |t|
     t.string "title"
     t.string "message_id"
     t.string "assigned_to"
-    t.string "status"
+    t.string "status", default: "open"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "ticket_number"
+    t.string "patient_name"
+    t.string "reason_for_visit"
+    t.string "department"
+    t.text "comments"
   end
 end

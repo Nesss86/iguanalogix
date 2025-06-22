@@ -1,0 +1,203 @@
+@use 'sass:color';
+@use './variables' as *;
+
+.polling-message-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: $border-radius;
+  background-color: $white;
+  box-shadow: $card-shadow;
+
+  h2 {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-md;
+    color: $text-color;
+    text-align: center;
+  }
+
+  // ✅ FILTER BAR
+  .filter-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    input,
+    select {
+      padding: 0.5rem 1rem;
+      border-radius: $border-radius;
+      border: none;
+      font-size: $font-size-sm;
+      box-shadow: inset 2px 2px 5px $shadow-dark, inset -2px -2px 5px $shadow-light;
+      background-color: $white;
+      color: $text-color;
+
+      &::placeholder {
+        color: color.adjust($text-color, $lightness: 30%);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px color.adjust($teal, $lightness: 40%);
+      }
+    }
+  }
+
+  .message-list {
+    list-style: none;
+    padding: 0;
+
+    .message-item {
+      background: linear-gradient(
+        135deg,
+        $teal 0%,
+        color.adjust($teal, $lightness: 20%) 100%
+      );
+      margin-bottom: $spacing-sm;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius;
+      box-shadow: inset 2px 2px 6px $shadow-dark, inset -2px -2px 6px $shadow-light;
+      color: $white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transform: translateY(10px);
+      opacity: 0;
+      animation: fadeSlideIn 0.4s ease forwards;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 4px 4px 12px $shadow-dark, -4px -4px 12px $shadow-light;
+      }
+
+      .message-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+        flex-wrap: wrap;
+
+        strong {
+          font-size: $font-size-base;
+          flex: 1 1 auto;
+        }
+
+        .timestamp {
+          font-size: $font-size-xs;
+          opacity: 0.85;
+          padding-left: 1rem;
+          white-space: nowrap;
+        }
+
+        .toggle-button {
+          background: none;
+          border: none;
+          color: $white;
+          font-size: $font-size-sm;
+          cursor: pointer;
+          white-space: nowrap;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .ticket-details {
+        margin-top: $spacing-xs;
+        padding-left: 1rem;
+
+        li {
+          background: none;
+          box-shadow: none;
+          padding: 0;
+          margin: 0.25rem 0;
+          font-size: $font-size-sm;
+          color: $white;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          &::before {
+            content: '📎';
+            font-size: 0.85rem;
+          }
+
+          &.status-open {
+            color: #d1fae5;
+            font-weight: bold;
+
+            &::before {
+              content: '🟢';
+            }
+          }
+
+          &.status-pending {
+            color: #fef9c3;
+            font-weight: bold;
+
+            &::before {
+              content: '🟡';
+            }
+          }
+
+          &.status-closed {
+            color: #fecaca;
+            font-weight: bold;
+
+            &::before {
+              content: '🔴';
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // ✅ PAGINATION CONTROLS
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+
+    button {
+      background-color: $white;
+      color: $text-color;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: $font-size-sm;
+      border-radius: $border-radius;
+      box-shadow: inset 2px 2px 5px $shadow-dark, inset -2px -2px 5px $shadow-light;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:enabled {
+        transform: translateY(-1px);
+        box-shadow: 4px 4px 12px $shadow-dark, -4px -4px 12px $shadow-light;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+    }
+
+    span {
+      font-size: $font-size-sm;
+      color: $text-muted;
+      padding: 0 0.5rem;
+    }
+  }
+}
+
+
+
+
+
+
+
+

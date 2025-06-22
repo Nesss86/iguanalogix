@@ -1,0 +1,41 @@
+@use './variables' as *;
+
+.toast-container {
+  position: fixed;
+  top: $spacing-lg;
+  right: $spacing-lg;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.toast {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius;
+  font-size: $font-size-sm;
+  font-family: $font-stack;
+  background-color: $white;
+  color: $text-color;
+  box-shadow: $card-shadow;
+  animation: fadeSlideIn 0.4s ease forwards;
+
+  &.success {
+    border-left: 6px solid $teal;
+  }
+
+  &.error {
+    border-left: 6px solid red;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
