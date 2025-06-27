@@ -3,6 +3,15 @@ import { useState } from 'react';
 import axios from 'axios';
 import '../styles/_new-ticket-form.scss';
 
+const demoUsers = [
+  "Nurse Jamie",
+  "Nurse Riley",
+  "Nurse Taylor",
+  "Dr. Smith",
+  "Dr. Patel",
+  "Dr. Chen"
+];
+
 export default function NewTicketForm({ onTicketCreated, currentUser }) {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -12,6 +21,7 @@ export default function NewTicketForm({ onTicketCreated, currentUser }) {
   const [reason, setReason] = useState('');
   const [department, setDepartment] = useState('');
   const [comments, setComments] = useState('');
+  const [assignedTo, setAssignedTo] = useState(currentUser?.name || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -30,15 +40,14 @@ export default function NewTicketForm({ onTicketCreated, currentUser }) {
       patient_name: patientName,
       reason_for_visit: reason,
       department,
-      comments,
+      notes: comments, // ✅ Send comments as notes
       message_id: initialData.message_id || null,
-      assigned_to: currentUser || null
+      assigned_to: assignedTo
     };
 
     try {
       const response = await axios.post('http://localhost:3000/tickets', { ticket: newTicket });
       
-      // ✅ Inform parent about the new ticket
       if (onTicketCreated) {
         onTicketCreated(response.data);
       }
@@ -89,6 +98,16 @@ export default function NewTicketForm({ onTicketCreated, currentUser }) {
         </label>
 
         <label>
+          Assigned To:
+          <select value={assignedTo} onChange={(e) => setAssignedTo(e.target.value)} required>
+            <option value="" disabled>Select a staff member</option>
+            {demoUsers.map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+        </label>
+
+        <label>
           Comments (optional):
           <textarea
             value={comments}
@@ -103,5 +122,6 @@ export default function NewTicketForm({ onTicketCreated, currentUser }) {
     </div>
   );
 }
+
 
 

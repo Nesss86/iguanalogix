@@ -1,3 +1,6 @@
+@use 'sass:color';
+@use './variables' as *;
+
 .chat-window-overlay {
   position: fixed;
   top: 0;
@@ -12,69 +15,238 @@
 }
 
 .chat-window {
-  background: #f1f4f8;
-  border-radius: 20px;
+  background: $white;
+  border-radius: $border-radius-lg;
   width: 500px;
   max-height: 80vh;
-  padding: 1.5rem;
+  padding: $spacing-lg;
   box-shadow:
-    inset 8px 8px 16px #d1d9e6,
-    inset -8px -8px 16px #ffffff;
+    8px 8px 16px $shadow-dark,
+    -8px -8px 16px $shadow-light;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  bottom: 100px;
+  right: 40px;
+  z-index: 2001;
+  animation: fadeInUp 0.3s ease;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: $font-size-lg;
+    font-weight: bold;
+    color: $text-color;
+    margin-bottom: $spacing-md;
+
+    button {
+      background: transparent;
+      border: none;
+      font-size: $font-size-base;
+      cursor: pointer;
+      color: $text-color;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .linked-info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-sm;
+
+    .linked-item {
+      background-color: $gray-light;
+      padding: 0.5rem 1rem;
+      border-radius: $border-radius;
+      font-size: $font-size-sm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: $text-color;
+      box-shadow: inset 2px 2px 6px $shadow-dark, inset -2px -2px 6px $shadow-light;
+
+      button {
+        background: none;
+        border: none;
+        color: $text-muted;
+        font-size: $font-size-sm;
+        cursor: pointer;
+
+        &:hover {
+          color: color.adjust($text-muted, $lightness: -20%);
+        }
+      }
+    }
+  }
+
+  .select-linkers {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+
+    select {
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius;
+      border: none;
+      font-size: $font-size-sm;
+      background: $white;
+      color: $text-color;
+      box-shadow: inset 4px 4px 8px $shadow-dark, inset -4px -4px 8px $shadow-light;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px color.adjust($teal, $lightness: 40%);
+      }
+    }
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding-right: 4px;
+  }
+
+  .chat-bubble {
+    padding: $spacing-sm $spacing-md;
+    border-radius: 1rem;
+    max-width: 75%;
+    word-wrap: break-word;
+    font-size: $font-size-sm;
+    box-shadow: 6px 6px 10px $shadow-dark, -6px -6px 10px $shadow-light;
+    animation: fadeSlideIn 0.3s ease forwards;
+
+    &.self {
+      align-self: flex-end;
+      background: color.adjust($teal, $lightness: 20%);
+      color: $text-color;
+    }
+
+    &.other {
+      align-self: flex-start;
+      background: $gray-light;
+      color: $text-color;
+    }
+
+    .sender {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+
+    .timestamp {
+      font-size: $font-size-xs;
+      color: $text-muted;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .chat-input {
+    display: flex;
+    gap: $spacing-sm;
+
+    input {
+      flex: 1;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius;
+      border: none;
+      font-size: $font-size-sm;
+      box-shadow:
+        inset 4px 4px 8px $shadow-dark,
+        inset -4px -4px 8px $shadow-light;
+      background: $white;
+      color: $text-color;
+
+      &::placeholder {
+        color: color.adjust($text-color, $lightness: 30%);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px color.adjust($teal, $lightness: 40%);
+      }
+    }
+
+    .return-button-wrapper {
+      margin-bottom: $spacing-md;
+    
+      .return-btn {
+        padding: $spacing-sm $spacing-md;
+        font-size: $font-size-sm;
+        border: none;
+        border-radius: $border-radius;
+        font-weight: bold;
+        background: $gray-light;
+        color: $text-color;
+        cursor: pointer;
+        box-shadow:
+          inset 2px 2px 4px $shadow-dark,
+          inset -2px -2px 4px $shadow-light;
+        transition: background 0.2s ease;
+    
+        &:hover {
+          background: color.adjust($gray-light, $lightness: -5%);
+        }
+    
+        &:active {
+          box-shadow:
+            inset 1px 1px 2px $shadow-dark,
+            inset -1px -1px 2px $shadow-light;
+        }
+      }
+    }
+    
+
+    button {
+      padding: $spacing-sm $spacing-md;
+      background: $teal;
+      color: $white;
+      border: none;
+      border-radius: $border-radius;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: color.adjust($teal, $lightness: -10%);
+      }
+    }
+  }
 }
 
-.chat-window header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+// ✅ Animations
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 1rem;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.chat-bubble {
-  background: #e0e5ec;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  border-radius: 15px;
-  max-width: 75%;
-  word-wrap: break-word;
-  box-shadow: 6px 6px 10px #c8d0e7, -6px -6px 10px #ffffff;
-}
 
-.chat-bubble.self {
-  align-self: flex-end;
-  background: #c2fbd7;
-}
 
-.chat-bubble.other {
-  align-self: flex-start;
-}
 
-.chat-input {
-  display: flex;
-  gap: 0.5rem;
-}
 
-.chat-input input {
-  flex: 1;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: none;
-  box-shadow:
-    inset 4px 4px 8px #d1d9e6,
-    inset -4px -4px 8px #ffffff;
-}
 
-.chat-input button {
-  padding: 0.75rem 1.25rem;
-  background: #4f46e5;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-}

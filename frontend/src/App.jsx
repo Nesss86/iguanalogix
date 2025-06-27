@@ -10,36 +10,56 @@ import PollingMessage from './pages/PollingMessage';
 import NewTicketForm from './pages/NewTicketForm';
 import TicketDetail from './pages/TicketDetail';
 import TicketsList from './pages/TicketsList';
+import ChatWindowWrapper from './pages/ChatWindowWrapper';
+import MessengerPage from './pages/MessengerPage';
 
 import './styles/main.scss';
+
+const demoUsers = [
+  { id: 14, name: "Nurse Jamie" },
+  { id: 15, name: "Nurse Riley" },
+  { id: 16, name: "Nurse Taylor" },
+  { id: 17, name: "Dr. Smith" },
+  { id: 18, name: "Dr. Patel" },  
+  { id: 19, name: "Dr. Chen" }
+];
+
 
 function App() {
   const [tickets, setTickets] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [toast, setToast] = useState('');
-  const [currentUser] = useState('Nurse Jamie');
+  const [currentUser, setCurrentUser] = useState(() => {
+    const stored = localStorage.getItem('currentUser');
+    return stored ? JSON.parse(stored) : demoUsers[0];
+  });
 
   useEffect(() => {
     fetchTickets();
     fetchAppointments();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  }, [currentUser]);
+
   const fetchTickets = () => {
-    axios.get('http://localhost:3000/tickets')
+    axios
+      .get('http://localhost:3000/tickets')
       .then((res) => setTickets(res.data))
       .catch((err) => console.error('Error fetching tickets:', err));
   };
 
   const fetchAppointments = () => {
-    axios.get('http://localhost:3000/appointments')
+    axios
+      .get('http://localhost:3000/appointments')
       .then((res) => setAppointments(res.data))
       .catch((err) => console.error('Error fetching appointments:', err));
   };
 
   const handleNewAppointment = (newAppointment) => {
     setAppointments((prev) => [...prev, newAppointment]);
-    setToast('Appointment added.');
-    setTimeout(() => setToast(''), 3000);
+    showToast('Appointment added.');
   };
 
   const handleAppointmentUpdate = (updatedAppointment) => {
@@ -48,20 +68,17 @@ function App() {
         appt.id === updatedAppointment.id ? updatedAppointment : appt
       )
     );
-    setToast('Appointment updated.');
-    setTimeout(() => setToast(''), 3000);
+    showToast('Appointment updated.');
   };
 
   const handleAppointmentDelete = (deletedId) => {
     setAppointments((prev) => prev.filter((appt) => appt.id !== deletedId));
-    setToast('Appointment canceled.');
-    setTimeout(() => setToast(''), 3000);
+    showToast('Appointment canceled.');
   };
 
   const handleNewTicket = (ticket) => {
     setTickets((prev) => [...prev, ticket]);
-    setToast('Ticket successfully created.');
-    setTimeout(() => setToast(''), 3000);
+    showToast('Ticket successfully created.');
   };
 
   const handleTicketUpdate = (updatedTicket) => {
@@ -72,9 +89,19 @@ function App() {
     );
   };
 
+  const showToast = (message) => {
+    setToast(message);
+    setTimeout(() => setToast(''), 3000);
+  };
+
   return (
     <Router>
-      <NavBar />
+      <NavBar
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        demoUsers={demoUsers}
+      />
+
       <div className="app-content">
         {toast && <div className="toast">{toast}</div>}
 
@@ -93,22 +120,9 @@ function App() {
             }
           />
 
-          <Route
-            path="/chat"
-            element={
-              <PollingMessage
-                tickets={tickets}
-                currentUser={currentUser}
-              />
-            }
-          />
-
           <Route path="/summary" element={<AISummary />} />
 
-          <Route
-            path="/tickets"
-            element={<TicketsList tickets={tickets} />}
-          />
+          <Route path="/tickets" element={<TicketsList tickets={tickets} />} />
 
           <Route
             path="/tickets/new"
@@ -129,6 +143,28 @@ function App() {
               />
             }
           />
+
+          <Route
+            path="/chat"
+            element={
+              <ChatWindowWrapper
+                currentUser={currentUser}
+                tickets={tickets}
+              />
+            }
+          />
+        
+          <Route
+            path="/messenger"
+            element={
+              <MessengerPage
+                currentUser={currentUser}
+                tickets={tickets}
+                appointments={appointments}
+              />
+            }
+          />
+          
         </Routes>
       </div>
     </Router>
@@ -136,6 +172,14 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
 
 
 

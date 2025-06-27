@@ -1,0 +1,66 @@
+@use './variables' as *;
+
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $background;
+  min-height: 100vh;
+  padding: 0 24px; // Optional: horizontal padding for small screens
+  box-sizing: border-box;
+}
+
+
+.welcome-card {
+  background: $white;
+  border-radius: 24px;
+  padding: 48px;
+  max-width: 720px;
+  box-shadow: 
+    8px 8px 20px $shadow-dark, 
+    -8px -8px 20px $shadow-light;
+  text-align: center;
+
+  h1 {
+    font-size: $font-size-xxl;
+    color: $text-color;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    font-size: $font-size-md;
+    color: $text-muted; // <- replaced $text-subtle with defined $text-muted
+    margin-bottom: $spacing-lg;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-md;
+  }
+
+  .neumorphic-btn {
+    background: $primary-light;
+    border-radius: 14px;
+    padding: 14px 28px;
+    text-decoration: none;
+    color: $text-color;
+    font-weight: 600;
+    box-shadow: 
+      inset 4px 4px 8px $shadow-dark, 
+      inset -4px -4px 8px $shadow-light;
+    transition: all 0.15s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    &.secondary {
+      background: $accent-light; // Optional alternate color
+    }
+  }
+}
+
+

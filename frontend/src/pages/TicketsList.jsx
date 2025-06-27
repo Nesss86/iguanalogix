@@ -12,6 +12,7 @@ function TicketsList({ tickets }) {
         <div className="ticket-grid">
           {tickets.map((ticket) => (
             <Link to={`/tickets/${ticket.id}`} key={ticket.id} className="ticket-card">
+              <span className="ticket-number">#{ticket.ticket_number || ticket.id}</span>
               <h3>{ticket.patient_name}</h3>
               <p><strong>Reason:</strong> {ticket.reason_for_visit}</p>
               <p><strong>Department:</strong> {ticket.department}</p>
@@ -25,5 +26,6 @@ function TicketsList({ tickets }) {
 }
 
 export default TicketsList;
+
 
 
