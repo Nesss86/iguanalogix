@@ -33,6 +33,7 @@
       box-shadow: inset 2px 2px 5px $shadow-dark, inset -2px -2px 5px $shadow-light;
       background-color: $white;
       color: $text-color;
+      font-family: $font-stack;
 
       &::placeholder {
         color: color.adjust($text-color, $lightness: 30%);
@@ -45,6 +46,7 @@
     }
   }
 
+  // ✅ MESSAGE LIST
   .message-list {
     list-style: none;
     padding: 0;
@@ -58,7 +60,7 @@
       margin-bottom: $spacing-sm;
       padding: $spacing-sm $spacing-md;
       border-radius: $border-radius;
-      box-shadow: inset 2px 2px 6px $shadow-dark, inset -2px -2px 6px $shadow-light;
+      box-shadow: 4px 4px 12px $shadow-dark, -4px -4px 12px $shadow-light;
       color: $white;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       transform: translateY(10px);
@@ -67,7 +69,7 @@
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 4px 4px 12px $shadow-dark, -4px -4px 12px $shadow-light;
+        box-shadow: 6px 6px 14px $shadow-dark, -6px -6px 14px $shadow-light;
       }
 
       .message-header {
@@ -193,6 +195,124 @@
     }
   }
 }
+
+// ✅ Chat modal (floating messenger)
+.chat-modal {
+  width: 100%;
+  max-width: 480px;
+  height: 600px;
+  background: $background-color;
+  border-radius: $border-radius;
+  box-shadow: 6px 6px 12px $shadow-dark, -6px -6px 12px $shadow-light;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+
+  .chat-header {
+    background: $teal;
+    color: $white;
+    padding: 1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      background: transparent;
+      border: none;
+      color: $white;
+      font-size: $font-size-base;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// ✅ Floating Chat Button (bottom-right circle)
+.floating-chat-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+
+  .chat-toggle {
+    background-color: $teal;
+    color: $white;
+    border: none;
+    padding: 1rem;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 6px 6px 12px $shadow-dark, -6px -6px 12px $shadow-light;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ✅ Fade-in animation for messages
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.link-options {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  select {
+    padding: 0.5rem;
+    border-radius: $border-radius;
+    border: none;
+    background: $white;
+    font-size: $font-size-sm;
+    color: $text-color;
+    box-shadow: inset 2px 2px 5px $shadow-dark, inset -2px -2px 5px $shadow-light;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px color.adjust($teal, $lightness: 40%);
+    }
+  }
+
+  .submit-link {
+    background-color: $teal;
+    color: $white;
+    padding: 0.5rem;
+    font-size: $font-size-sm;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    box-shadow: 2px 2px 6px $shadow-dark, -2px -2px 6px $shadow-light;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+
+
 
 
 

@@ -90,6 +90,61 @@
   }
 }
 
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+
+  &__brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #2c3e50;
+  }
+
+  &__links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: #34495e;
+    font-weight: 500;
+
+    &.active {
+      color: #007acc;
+    }
+  }
+
+  &__user {
+    font-size: 0.95rem;
+    color: #555;
+  }
+}
+
+.navbar__user-picker {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+
+  label {
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+  select {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+}
+
+
+
 
 
 

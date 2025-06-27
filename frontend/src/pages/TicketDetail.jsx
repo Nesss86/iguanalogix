@@ -42,7 +42,7 @@ function TicketDetail({ onTicketUpdate }) {
 
   return (
     <div className="ticket-detail">
-      <h2>Ticket #{ticket.id}</h2>
+      <h2>Ticket #{ticket.ticket_number || ticket.TicketDetail}</h2>
       <p><strong>Title:</strong> {ticket.title}</p>
       <p><strong>Assigned To:</strong> {ticket.assigned_to || 'Unassigned'}</p>
       <p><strong>Notes:</strong> {ticket.notes || 'None'}</p>

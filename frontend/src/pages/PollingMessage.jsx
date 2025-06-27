@@ -6,7 +6,7 @@ import { AppToastContainer, useToasts } from '../components/AppToastContainer';
 import { useNavigate } from 'react-router-dom';
 import ChatWindow from '../components/ChatWindow';
 
-export default function PollingMessage({ tickets, currentUser }) {
+export default function PollingMessage({ tickets, appointments = [], currentUser }) {
   const [messages, setMessages] = useState([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -72,9 +72,7 @@ export default function PollingMessage({ tickets, currentUser }) {
     setActiveChat(null);
   };
 
-  const chatMessages = messages.filter(
-    (msg) => msg.message_id === activeChat
-  );
+  const chatMessages = messages.filter((msg) => msg.message_id === activeChat);
 
   return (
     <div className="polling-message-container">
@@ -172,6 +170,8 @@ export default function PollingMessage({ tickets, currentUser }) {
           onClose={closeChat}
           messageId={activeChat}
           currentUser={currentUser}
+          tickets={tickets}
+          appointments={appointments}
         />
       )}
 
@@ -179,3 +179,4 @@ export default function PollingMessage({ tickets, currentUser }) {
     </div>
   );
 }
+
