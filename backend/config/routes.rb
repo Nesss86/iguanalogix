@@ -1,13 +1,29 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      post "hl7_data", to: "api/v1/hl7_data#create"
+    end
+  end
+  
   resources :appointments
   resources :tickets
-  resources :messages
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :messages do
+    member do
+      post 'link_ticket'
+      delete 'unlink_ticket'
+      post 'link_appointment'
+      delete 'unlink_appointment'
+    end
+  end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # ✅ Add custom routes for thread-level actions
+  delete '/threads/:message_id', to: 'messages#destroy_thread'
+  patch '/threads/:message_id/archive', to: 'messages#archive_thread'
+
+  # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
+  # Root path placeholder
   # root "posts#index"
 end
+

@@ -48,7 +48,7 @@ class AppointmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def appointment_params
-      params.require(:appointment).permit(:patient_name, :department)
+      params.require(:appointment).permit(:patient_name, :department, :appointment_time)
     end
 
     # Parse datetime string as local (Eastern) time

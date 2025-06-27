@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_22_045837) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_23_130329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_22_045837) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "sender"
+    t.bigint "ticket_id"
+    t.bigint "appointment_id"
+    t.boolean "archived", default: false
+    t.bigint "user_id", null: false
+    t.index ["appointment_id"], name: "index_messages_on_appointment_id"
+    t.index ["ticket_id"], name: "index_messages_on_ticket_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "tickets", force: :cascade do |t|
@@ -46,4 +53,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_22_045837) do
     t.string "department"
     t.text "comments"
   end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "messages", "appointments"
+  add_foreign_key "messages", "tickets"
+  add_foreign_key "messages", "users"
 end

@@ -8,38 +8,89 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-
+# Clear data first
 Message.destroy_all
+Appointment.destroy_all
+Ticket.destroy_all
+User.destroy_all
 
-Message.create!([
+# Nurses
+nurses = [
+  { name: "Nurse Jamie", role: "nurse" },
+  { name: "Nurse Riley", role: "nurse" },
+  { name: "Nurse Taylor", role: "nurse" }
+]
+
+# Doctors
+doctors = [
+  { name: "Dr. Smith", role: "doctor" },
+  { name: "Dr. Patel", role: "doctor" },
+  { name: "Dr. Chen", role: "doctor" }
+]
+
+users = (nurses + doctors).map { |attrs| User.create!(attrs) }
+puts "✅ Seeded #{User.count} users."
+
+# Get specific users for ticket/message linking
+user_lookup = User.all.index_by(&:name)
+
+# Appointments
+appointments_data = [
+  { patient_name: "John Doe", appointment_time: Time.now + 1.day, department: "General" },
+  { patient_name: "Jane Smith", appointment_time: Time.now + 2.days, department: "Pediatrics" },
+  { patient_name: "Carlos Ramirez", appointment_time: Time.now + 3.days, department: "Cardiology" }
+]
+appointments = Appointment.create!(appointments_data)
+puts "✅ Seeded #{appointments.count} appointments."
+
+# Tickets
+tickets_data = [
   {
-    message_id: "MSG001",
+    title: "Headache Consultation",
+    message_id: "thread-001",
+    assigned_to: "Dr. Smith",
+    status: "open",
+    notes: "Patient has recurring headaches.",
+    ticket_number: "TICKET001",
+    patient_name: "John Doe",
+    reason_for_visit: "Headache",
+    department: "General",
+    comments: "Recommended follow-up in 1 week."
+  },
+  {
+    title: "Routine Checkup",
+    message_id: "thread-002",
+    assigned_to: "Nurse Riley",
+    status: "open",
+    notes: "Standard annual physical.",
+    ticket_number: "TICKET002",
+    patient_name: "Jane Smith",
+    reason_for_visit: "Checkup",
+    department: "Pediatrics",
+    comments: "No concerns raised."
+  }
+]
+tickets = Ticket.create!(tickets_data)
+puts "✅ Seeded #{tickets.count} tickets."
+
+# Messages (linked to a user)
+messages_data = [
+  {
+    message_id: "thread-001",
     patient_name: "John Doe",
     timestamp: Time.now - 2.hours,
-    content: "MSH|^~\\&|ADT|HOSPITAL|LAB|HOSPITAL|202506191400||ADT^A01|MSG001|P|2.3\rPID|1||123456||DOE^JOHN||19800101|M|||123 MAIN ST^^TORONTO^ON^M1M1M1||555-1234"
+    content: "Patient reports migraines.",
+    sender: "Dr. Smith",
+    user_id: user_lookup["Dr. Smith"].id
   },
   {
-    message_id: "MSG002",
+    message_id: "thread-002",
     patient_name: "Jane Smith",
     timestamp: Time.now - 90.minutes,
-    content: "MSH|^~\\&|ADT|HOSPITAL|LAB|HOSPITAL|202506191430||ADT^A01|MSG002|P|2.3\rPID|1||789012||SMITH^JANE||19900505|F|||456 QUEEN ST^^TORONTO^ON^M2M2M2||555-5678"
-  },
-  {
-    message_id: "MSG003",
-    patient_name: "Carlos Ramirez",
-    timestamp: Time.now - 1.hour,
-    content: "MSH|^~\\&|ORM|HOSPITAL|PHARM|HOSPITAL|202506191500||ORM^O01|MSG003|P|2.3\rPID|1||456789||RAMIREZ^CARLOS||19781212|M|||789 KING ST^^TORONTO^ON^M3M3M3||555-8765"
-  },
-  {
-    message_id: "MSG004",
-    patient_name: "Ayesha Patel",
-    timestamp: Time.now - 30.minutes,
-    content: "MSH|^~\\&|ORM|HOSPITAL|PHARM|HOSPITAL|202506191530||ORM^O01|MSG004|P|2.3\rPID|1||321654||PATEL^AYESHA||19921120|F|||321 YONGE ST^^TORONTO^ON^M4M4M4||555-4321"
-  },
-  {
-    message_id: "MSG005",
-    patient_name: "Liam O'Reilly",
-    timestamp: Time.now - 10.minutes,
-    content: "MSH|^~\\&|ORU|HOSPITAL|RAD|HOSPITAL|202506191550||ORU^R01|MSG005|P|2.3\rPID|1||987321||O'REILLY^LIAM||19850715|M|||987 BLOOR ST^^TORONTO^ON^M5M5M5||555-6789"
+    content: "Follow-up scheduled for Monday.",
+    sender: "Nurse Riley",
+    user_id: user_lookup["Nurse Riley"].id
   }
-])
+]
+Message.create!(messages_data)
+puts "✅ Seeded #{messages_data.count} messages."

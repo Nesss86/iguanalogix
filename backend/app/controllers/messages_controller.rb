@@ -1,65 +1,73 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[show update destroy]
-
-  # GET /messages?page=1&per_page=10
+  # GET /messages
   def index
-    page = params[:page].to_i > 0 ? params[:page].to_i : 1
-    per_page = params[:per_page].to_i > 0 ? params[:per_page].to_i : 10
+    message_id = params[:message_id]
+    Rails.logger.debug "📩 Index Params: #{params.inspect}"
 
-    total_count = Message.count
+    if message_id
+      messages = Message.where(message_id: message_id).order(:created_at)
+    else
+      messages = Message.where.not(message_id: ['demo-thread', 'test-thread'])
+                        .where(archived: false)
+                        .order(created_at: :desc)
+                        .limit(10)
+    end
 
-    @messages = Message
-                  .order(created_at: :desc)
-                  .offset((page - 1) * per_page)
-                  .limit(per_page)
-
-    render json: {
-      messages: @messages,
-      total_count: total_count,
-      current_page: page,
-      per_page: per_page
-    }
-  end
-
-  # GET /messages/1
-  def show
-    render json: @message
+    render json: messages, each_serializer: MessageSerializer
   end
 
   # POST /messages
   def create
-    @message = Message.new(message_params)
+    Rails.logger.debug "🔥 Params received: #{params.inspect}"
+
+    permitted = message_params
+    Rails.logger.debug "📦 message_params: #{permitted.inspect}"
+
+    user = User.find_by(id: permitted[:user_id])
+    unless user
+      Rails.logger.error "❌ User not found with ID: #{permitted[:user_id]}"
+      render json: { error: "User not found" }, status: :unprocessable_entity and return
+    end
+
+    @message = Message.new(permitted.except(:user_id))
+    @message.user = user
+
+    Rails.logger.debug "📬 Built Message: #{@message.inspect}"
 
     if @message.save
-      render json: @message, status: :created, location: @message
+      render json: @message, status: :created
     else
+      Rails.logger.error "❌ Message save failed: #{@message.errors.full_messages}"
       render json: @message.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /messages/1
-  def update
-    if @message.update(message_params)
-      render json: @message
-    else
-      render json: @message.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /messages/1
+  # DELETE /messages/:id
   def destroy
-    @message.destroy!
+    message = Message.find_by(id: params[:id])
+
+    if message
+      message.destroy
+      render json: { message: 'Message deleted successfully' }, status: :ok
+    else
+      render json: { error: 'Message not found' }, status: :not_found
+    end
   end
 
   private
 
-    def set_message
-      @message = Message.find(params[:id])
-    end
-
-    def message_params
-      params.require(:message).permit(:message_id, :patient_name, :content, :timestamp, :sender)
-    end
+  def message_params
+    params.require(:message).permit(:message_id, :sender, :content, :user_id)
+  end
 end
+
+
+
+
+
+
+
+
+
 
 

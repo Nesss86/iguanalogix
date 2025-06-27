@@ -64,54 +64,6 @@
   }
 }
 
-.conversation-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
-  display: grid;
-  gap: 1rem;
-}
-
-.conversation-card {
-  background: #f1f5f9;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 4px 4px 10px #cbd5e1, -4px -4px 10px #ffffff;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: #e2e8f0;
-  }
-
-  .conversation-header {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-
-  .message-preview {
-    color: #334155;
-    font-size: 0.95rem;
-    margin: 0;
-  }
-
-  .delete-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: transparent;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-
-    &:hover {
-      color: #e11d48;
-    }
-  }
-}
 
 
 
