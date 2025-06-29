@@ -118,11 +118,6 @@ rails s
 
 > ⚠️ Don’t forget to add your OpenAI API key to your `.env` file!
 
----
-
-## 🤝 Credits
-
-Built by Vanessa Little as part of a second-round interview demo for iNTERFACEWARE.
 
 ---
 
